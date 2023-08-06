@@ -11,7 +11,7 @@ import java.time.format.DateTimeParseException;
 @UtilityClass
 public class DateMapper {
 
-    private final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public String toStr(@NotNull LocalDateTime date) {
         try {
