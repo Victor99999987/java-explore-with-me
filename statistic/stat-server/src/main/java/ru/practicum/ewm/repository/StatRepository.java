@@ -30,7 +30,7 @@ public interface StatRepository extends JpaRepository<Stat, Long> {
             "and st.uri in ?3 " +
             "group by st.app, st.uri " +
             "order by count(distinct st.ip) desc")
-    List<ViewStatsDto> getStatsByUrisAndUniqueIp(LocalDateTime start, LocalDateTime end, String[] uris);
+    List<ViewStatsDto> getStatsByUrisAndUniqueIp(LocalDateTime start, LocalDateTime end, List<String> uris);
 
     @Query("select new ru.practicum.ewm.dto.ViewStatsDto(st.app, st.uri, count(st.ip)) " +
             "from Stat as st " +
@@ -38,5 +38,5 @@ public interface StatRepository extends JpaRepository<Stat, Long> {
             "and st.uri in ?3 " +
             "group by st.app, st.uri " +
             "order by count(st.ip) desc")
-    List<ViewStatsDto> getStatsByUrisAndNonUniqueIp(LocalDateTime start, LocalDateTime end, String[] uris);
+    List<ViewStatsDto> getStatsByUrisAndNonUniqueIp(LocalDateTime start, LocalDateTime end, List<String> uris);
 }

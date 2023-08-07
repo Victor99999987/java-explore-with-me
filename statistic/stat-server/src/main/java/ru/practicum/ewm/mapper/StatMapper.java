@@ -12,7 +12,7 @@ public class StatMapper {
                 .app(endpointHitDto.getApp())
                 .uri(endpointHitDto.getUri())
                 .ip(endpointHitDto.getIp())
-                .created(DateMapper.toDate(endpointHitDto.getTimestamp()))
+                .created(endpointHitDto.getTimestamp())
                 .build();
     }
 

@@ -1,10 +1,12 @@
 package ru.practicum.ewm.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -21,8 +23,8 @@ public class EndpointHitDto {
     private String uri;
     @NotBlank(message = "Поле ip не может быть пустым")
     @Size(min = 7, max = 15, message = "ip должен быть от 7 до 15 символов")
-    @Pattern(regexp = "^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]$", message = "Неверный формат ip")
+    @Pattern(regexp = "^[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+$", message = "Неверный формат ip")
     private String ip;
-    @NotBlank(message = "Поле timestamp не может быть пустым")
-    private String timestamp;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime timestamp;
 }
