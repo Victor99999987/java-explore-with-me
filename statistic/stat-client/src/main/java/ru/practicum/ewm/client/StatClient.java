@@ -21,6 +21,7 @@ import java.util.Map;
 @Service
 public class StatClient {
     private final RestTemplate rest = new RestTemplate(new HttpComponentsClientHttpRequestFactory());
+    private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
     public StatClient(@Value("${stat-server-uri}") String statServerUrl) {
         rest.setUriTemplateHandler(new DefaultUriBuilderFactory(statServerUrl));
@@ -45,13 +46,13 @@ public class StatClient {
     public ResponseEntity<Object> getStats(LocalDateTime start, LocalDateTime end, @Nullable List<String> uris, boolean unique) {
 
         Map<String, Object> params = new HashMap<>();
-        params.put("start", start.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        params.put("end", end.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        params.put("start", start.format(FORMATTER));
+        params.put("end", end.format(FORMATTER));
         params.put("unique", unique);
         String urisPath = "";
         if (uris != null) {
             urisPath = "&uris={uris}";
-            params.put("uris", uris);
+            params.put("uris", String.join("&uris=", uris));
         }
 
         ResponseEntity<List<ViewStatsDto>> serverResponse;
