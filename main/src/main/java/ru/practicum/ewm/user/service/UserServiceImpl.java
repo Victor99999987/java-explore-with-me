@@ -20,9 +20,8 @@ import java.util.stream.Collectors;
 @Service
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-
     private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
+    private final UserRepository userRepository;
 
     public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -30,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> getAllUsers(List<Long> ids, int from, int size) {
-        Verify.verifyFromAndSize(from,size);
+        Verify.verifyFromAndSize(from, size);
 
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
@@ -49,7 +48,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto addNewUser(NewUserRequest newUserRequest) {
         User user = UserMapper.toUser(newUserRequest);
-        if(userRepository.existsByName(user.getName())){
+        if (userRepository.existsByName(user.getName())) {
             throw new ConflictException("Имя пользователя уже занято");
         }
         user = userRepository.save(user);

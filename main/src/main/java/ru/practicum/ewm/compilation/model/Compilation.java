@@ -15,22 +15,19 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Compilation {
+    @ManyToMany(cascade = {CascadeType.ALL})
+    @JoinTable(
+            name = "compilations_events",
+            joinColumns = {@JoinColumn(name = "compilation_id")},
+            inverseJoinColumns = {@JoinColumn(name = "event_id")}
+    )
+    Set<Event> events = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
-
     @Column(name = "title")
     private String title;
-
     @Column(name = "pinned")
     private boolean pinned;
-
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "compilations_events",
-            joinColumns = { @JoinColumn(name = "compilation_id") },
-            inverseJoinColumns = { @JoinColumn(name = "event_id") }
-    )
-    Set<Event> events = new HashSet<>();
 }

@@ -36,7 +36,7 @@ public class AdminCategoryController {
 
     @PatchMapping("/admin/categories/{catId}")
     CategoryDto pathCategory(@PathVariable Long catId,
-                      @Valid @RequestBody NewCategoryDto newCategoryDto) {
+                             @Valid @RequestBody NewCategoryDto newCategoryDto) {
         log.info("Получен запрос на эндпоинт {}", "PATCH /admin/categories/" + catId);
         return categoryService.patchCategory(catId, newCategoryDto);
     }

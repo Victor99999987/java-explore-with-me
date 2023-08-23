@@ -14,7 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Builder
 public class NewCompilationDto {
-    private Set<Long> events= new HashSet<>();
+    private Set<Long> events = new HashSet<>();
     private boolean pinned = false;
     @NotNull(message = "поле title должно быть указано")
     @NotBlank(message = "поле title не должно состоять из пробелов")

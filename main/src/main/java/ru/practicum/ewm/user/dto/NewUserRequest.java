@@ -15,10 +15,10 @@ import javax.validation.constraints.Size;
 public class NewUserRequest {
     @NotNull(message = "email должен быть указан")
     @Email(message = "неверный формат email")
-    @Size(min = 6, max=254, message = "имя должно быть от 6 до 254 символов")
+    @Size(min = 6, max = 254, message = "имя должно быть от 6 до 254 символов")
     private String email;
     @NotNull(message = "имя должно быть указано")
     @NotBlank(message = "имя не должно состоять из пробелов")
-    @Size(min = 2, max=250, message = "имя должно быть от 2 до 250 символов")
+    @Size(min = 2, max = 250, message = "имя должно быть от 2 до 250 символов")
     private String name;
 }

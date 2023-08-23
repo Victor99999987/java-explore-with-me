@@ -20,20 +20,20 @@ public class PrivateRequestController {
     }
 
     @GetMapping("/users/{userId}/requests")
-    List<ParticipationRequestDto> getAllRequestByUserId(@PathVariable Long userId){
+    List<ParticipationRequestDto> getAllRequestByUserId(@PathVariable Long userId) {
         return requestService.getAllRequestByUserId(userId);
     }
 
     @PostMapping("/users/{userId}/requests")
     @ResponseStatus(HttpStatus.CREATED)
     ParticipationRequestDto addNewRequest(@PathVariable Long userId,
-                                          @RequestParam Long eventId){
+                                          @RequestParam Long eventId) {
         return requestService.addNewRequest(userId, eventId);
     }
 
     @PatchMapping("/users/{userId}/requests/{requestId}/cancel")
     ParticipationRequestDto patchRequestByUserIdAndRequestId(@PathVariable Long userId,
-                                                             @PathVariable Long requestId){
+                                                             @PathVariable Long requestId) {
         return requestService.patchRequestByUserIdAndRequestId(userId, requestId);
     }
 

@@ -42,21 +42,18 @@ import java.util.stream.Collectors;
 @Service
 public class EventServiceImpl implements EventService {
 
-    private final EventRepository eventRepository;
-    private final RequestRepository requestRepository;
-
-    private final LocationRepository locationRepository;
-    private final UserService userService;
-
-    private final CategoryService categoryService;
-    private final StatClient statClient;
-
     private static final LocalDateTime MIN_DATE = LocalDateTime.of(0, 1, 1, 0, 0);
     private static final LocalDateTime MAX_DATE = LocalDateTime.of(294276, 12, 31, 0, 0);
     private static final ObjectMapper MAPPER = new ObjectMapper();
     private static final TypeReference<List<ViewStatsDto>> TYPE_REFERENCE = new TypeReference<>() {
     };
     private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
+    private final EventRepository eventRepository;
+    private final RequestRepository requestRepository;
+    private final LocationRepository locationRepository;
+    private final UserService userService;
+    private final CategoryService categoryService;
+    private final StatClient statClient;
 
     public EventServiceImpl(EventRepository eventRepository, RequestRepository requestRepository, LocationRepository locationRepository, UserService userService, CategoryService categoryService, StatClient statClient) {
         this.eventRepository = eventRepository;
@@ -238,7 +235,7 @@ public class EventServiceImpl implements EventService {
                 .ip(request.getRemoteAddr())
                 .timestamp(LocalDateTime.now())
                 .build();
-        if(endpointHitDto.getIp().equals("0:0:0:0:0:0:0:1")) {
+        if (endpointHitDto.getIp().equals("0:0:0:0:0:0:0:1")) {
             endpointHitDto.setIp("127.0.0.1");
         }
         statClient.sendHit(endpointHitDto);
@@ -410,21 +407,21 @@ public class EventServiceImpl implements EventService {
         return toEventFullDtoWithCounts(event);
     }
 
-    private EventFullDto toEventFullDtoWithCounts(Event event){
+    private EventFullDto toEventFullDtoWithCounts(Event event) {
         EventFullDto eventFullDto = EventMapper.toEventFullDto(event);
 
         Long confirmedRequests = requestRepository.countAllByEventAndStatus(event, StateRequest.CONFIRMED);
         eventFullDto.setConfirmedRequests(confirmedRequests);
 
-        Map<String, Long> stats = getViews(List.of("/events/"+eventFullDto.getId()), MIN_DATE, MAX_DATE);
+        Map<String, Long> stats = getViews(List.of("/events/" + eventFullDto.getId()), MIN_DATE, MAX_DATE);
 
-        Long views = stats.getOrDefault("/events/"+eventFullDto.getId(),0L);
+        Long views = stats.getOrDefault("/events/" + eventFullDto.getId(), 0L);
         eventFullDto.setViews(views);
 
         return eventFullDto;
     }
 
-    private List<EventFullDto> toEventFullDtoWithCounts(List<Event> events){
+    private List<EventFullDto> toEventFullDtoWithCounts(List<Event> events) {
         List<Request> requests = requestRepository.findAllByEventInAndStatus(events, StateRequest.CONFIRMED);
 
         List<EventFullDto> eventFullDtos = events.stream()
@@ -432,8 +429,8 @@ public class EventServiceImpl implements EventService {
                 .collect(Collectors.toList());
 
         List<String> uris = new ArrayList<>();
-        for(EventFullDto eventFullDto: eventFullDtos){
-            uris.add("/events/"+eventFullDto.getId());
+        for (EventFullDto eventFullDto : eventFullDtos) {
+            uris.add("/events/" + eventFullDto.getId());
         }
         Map<String, Long> stats = getViews(uris, MIN_DATE, MAX_DATE);
 
@@ -442,7 +439,7 @@ public class EventServiceImpl implements EventService {
                     .filter(r -> Objects.equals(r.getEvent().getId(), eventFullDto.getId()))
                     .count();
             eventFullDto.setConfirmedRequests(confirmedRequests);
-            Long views = stats.getOrDefault("/events/"+eventFullDto.getId(),0L);
+            Long views = stats.getOrDefault("/events/" + eventFullDto.getId(), 0L);
             eventFullDto.setViews(views);
         }
         return eventFullDtos;

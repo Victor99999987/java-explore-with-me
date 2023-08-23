@@ -6,7 +6,6 @@ import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.dto.EventShortDto;
 import ru.practicum.ewm.event.dto.NewEventDto;
 import ru.practicum.ewm.event.model.Event;
-import ru.practicum.ewm.event.model.StateEvent;
 import ru.practicum.ewm.user.mapper.UserMapper;
 
 import java.time.LocalDateTime;
@@ -45,14 +44,14 @@ public class EventMapper {
                 .build();
     }
 
-    public static Event toEvent(NewEventDto newEventDto){
+    public static Event toEvent(NewEventDto newEventDto) {
         return Event.builder()
                 .annotation(newEventDto.getAnnotation())
                 .created(LocalDateTime.now())
                 .description(newEventDto.getDescription())
                 .eventDate(newEventDto.getEventDate())
                 .location(LocationMapper.toLocation(newEventDto.getLocation()))
-                        .paid(newEventDto.isPaid())
+                .paid(newEventDto.isPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
                 .requestModeration(newEventDto.isRequestModeration())
                 .title(newEventDto.getTitle())

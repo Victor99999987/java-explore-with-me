@@ -9,14 +9,14 @@ import ru.practicum.ewm.user.model.User;
 @UtilityClass
 public class UserMapper {
 
-    public static User toUser(NewUserRequest newUserRequest){
+    public static User toUser(NewUserRequest newUserRequest) {
         return User.builder()
                 .email(newUserRequest.getEmail())
                 .name(newUserRequest.getName())
                 .build();
     }
 
-    public static UserDto toUserDto(User user){
+    public static UserDto toUserDto(User user) {
         return UserDto.builder()
                 .id(user.getId())
                 .email(user.getEmail())
@@ -24,7 +24,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserShortDto toUserShotDto(User user){
+    public static UserShortDto toUserShotDto(User user) {
         return UserShortDto.builder()
                 .id(user.getId())
                 .name(user.getName())

@@ -1,12 +1,8 @@
 package ru.practicum.ewm.compilation.mapper;
 
 import lombok.experimental.UtilityClass;
-import ru.practicum.ewm.category.dto.CategoryDto;
-import ru.practicum.ewm.category.dto.NewCategoryDto;
-import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
 import ru.practicum.ewm.compilation.dto.NewCompilationDto;
-import ru.practicum.ewm.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.ewm.compilation.model.Compilation;
 import ru.practicum.ewm.event.dto.EventShortDto;
 import ru.practicum.ewm.event.mapper.EventMapper;
@@ -18,7 +14,7 @@ import java.util.stream.Collectors;
 @UtilityClass
 public class CompilationMapper {
 
-    public static Compilation toCompilation(NewCompilationDto newCompilationDto){
+    public static Compilation toCompilation(NewCompilationDto newCompilationDto) {
         return Compilation.builder()
                 .events(new HashSet<>())
                 .pinned(newCompilationDto.isPinned())
@@ -26,7 +22,7 @@ public class CompilationMapper {
                 .build();
     }
 
-    public static CompilationDto toCompilationDto(Compilation compilation){
+    public static CompilationDto toCompilationDto(Compilation compilation) {
         List<EventShortDto> events = compilation.getEvents().stream()
                 .map(EventMapper::toEventShortDto)
                 .collect(Collectors.toList());

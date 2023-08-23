@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class Verify {
-    public static void verifyFromAndSize(int from, int size){
+    public static void verifyFromAndSize(int from, int size) {
         if (from < 0) {
             throw new IllegalArgumentException("Минимальное значение записи, с которой можно получить данные равно 0");
         }

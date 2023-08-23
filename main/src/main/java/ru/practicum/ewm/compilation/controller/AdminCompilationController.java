@@ -10,7 +10,6 @@ import ru.practicum.ewm.compilation.dto.UpdateCompilationRequest;
 import ru.practicum.ewm.compilation.service.CompilationService;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Validated
 @RestController

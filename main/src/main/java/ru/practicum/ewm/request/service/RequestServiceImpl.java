@@ -24,11 +24,10 @@ import java.util.stream.Collectors;
 @Service
 public class RequestServiceImpl implements RequestService {
 
+    private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
-
-    private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
 
     public RequestServiceImpl(UserRepository userRepository, EventRepository eventRepository,
                               RequestRepository requestRepository) {
@@ -74,7 +73,7 @@ public class RequestServiceImpl implements RequestService {
         }
 
         StateRequest stateRequest = StateRequest.PENDING;
-        if(!event.isRequestModeration() || event.getParticipantLimit()==0){
+        if (!event.isRequestModeration() || event.getParticipantLimit() == 0) {
             stateRequest = StateRequest.CONFIRMED;
         }
 

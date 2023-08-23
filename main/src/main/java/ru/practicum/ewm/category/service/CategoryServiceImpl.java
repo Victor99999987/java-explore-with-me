@@ -21,10 +21,9 @@ import java.util.stream.Collectors;
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
+    private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
-
-    private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
 
     public CategoryServiceImpl(CategoryRepository categoryRepository, EventRepository eventRepository) {
         this.categoryRepository = categoryRepository;
@@ -35,7 +34,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto addNewCategory(NewCategoryDto newCategoryDto) {
         Category category = CategoryMapper.toCategory(newCategoryDto);
-        if(categoryRepository.existsByName(category.getName())){
+        if (categoryRepository.existsByName(category.getName())) {
             throw new ConflictException("Название категории уже существует");
         }
         category = categoryRepository.save(category);
@@ -46,7 +45,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(Long catId) {
         Category category = getCategoryById(catId);
-        if(eventRepository.countAllByCategory(category)>0){
+        if (eventRepository.countAllByCategory(category) > 0) {
             throw new ConflictException("Существуют события, связанные с категорией");
         }
         categoryRepository.deleteById(catId);
@@ -56,7 +55,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto patchCategory(Long catId, NewCategoryDto newCategoryDto) {
         Category category = getCategoryById(catId);
-        if(categoryRepository.existsByNameAndIdNot(newCategoryDto.getName(),category.getId())){
+        if (categoryRepository.existsByNameAndIdNot(newCategoryDto.getName(), category.getId())) {
             throw new ConflictException("Название категории уже существует");
         }
         category.setName(newCategoryDto.getName());
@@ -66,7 +65,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getAllCategories(int from, int size) {
-        Verify.verifyFromAndSize(from,size);
+        Verify.verifyFromAndSize(from, size);
 
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
@@ -81,7 +80,7 @@ public class CategoryServiceImpl implements CategoryService {
         return CategoryMapper.toCategoryDto(category);
     }
 
-    public Category getCategoryById(Long catId){
+    public Category getCategoryById(Long catId) {
         return categoryRepository.findById(catId)
                 .orElseThrow(() -> new NotFoundException(String.format("Категория с id %d не найдена", catId)));
     }

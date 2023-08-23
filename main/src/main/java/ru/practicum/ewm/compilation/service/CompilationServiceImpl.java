@@ -23,10 +23,9 @@ import java.util.stream.Collectors;
 
 @Service
 public class CompilationServiceImpl implements CompilationService {
+    private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
     private final EventRepository eventRepository;
     private final CompilationRepository compilationRepository;
-
-    private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
 
     public CompilationServiceImpl(EventRepository eventRepository, CompilationRepository compilationRepository) {
         this.eventRepository = eventRepository;
@@ -56,13 +55,13 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto patchCompilationById(Long compId, UpdateCompilationRequest updateCompilationRequest) {
         Compilation compilation = getCompilationById(compId);
-        if(updateCompilationRequest.getPinned()!=null){
+        if (updateCompilationRequest.getPinned() != null) {
             compilation.setPinned(updateCompilationRequest.getPinned());
         }
-        if(updateCompilationRequest.getTitle()!=null){
+        if (updateCompilationRequest.getTitle() != null) {
             compilation.setTitle(updateCompilationRequest.getTitle());
         }
-        if (updateCompilationRequest.getEvents()!=null) {
+        if (updateCompilationRequest.getEvents() != null) {
             Set<Event> events = eventRepository.findAllByIdIn(updateCompilationRequest.getEvents());
             compilation.setEvents(events);
         }
