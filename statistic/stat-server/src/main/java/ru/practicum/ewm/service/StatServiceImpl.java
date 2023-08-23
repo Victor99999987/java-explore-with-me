@@ -13,8 +13,6 @@ import java.util.List;
 @Service
 public class StatServiceImpl implements StatService {
     private final StatRepository statRepository;
-    private static final LocalDateTime MIN_DATE = LocalDateTime.of(0, 1, 1, 0, 0);
-    private static final LocalDateTime MAX_DATE = LocalDateTime.of(294276, 12, 31, 0, 0);
 
     public StatServiceImpl(StatRepository statRepository) {
         this.statRepository = statRepository;
@@ -28,20 +26,17 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        if (start != null && end != null) {
-            if (start.isAfter(end)) {
-                throw new IllegalArgumentException("Дата начала периода не может быть позже конца периода");
-            }
-            if (start.equals(end)) {
-                throw new IllegalArgumentException("Дата начала и конца периода совпадают");
-            }
-        }
-
         if (start == null) {
-            start = MIN_DATE;
+            throw new IllegalArgumentException("Не указана дата начала периода");
         }
-        if (end == null) {
-            end = MAX_DATE;
+        if(end == null) {
+            throw new IllegalArgumentException("Не указана дата конца периода");
+        }
+        if (start.isAfter(end)) {
+            throw new IllegalArgumentException("Дата начала периода не может быть позже конца периода");
+        }
+        if (start.equals(end)) {
+            throw new IllegalArgumentException("Дата начала и конца периода совпадают");
         }
 
         if (uris == null) {
