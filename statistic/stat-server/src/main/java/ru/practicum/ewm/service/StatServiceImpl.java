@@ -29,7 +29,7 @@ public class StatServiceImpl implements StatService {
         if (start == null) {
             throw new IllegalArgumentException("Не указана дата начала периода");
         }
-        if(end == null) {
+        if (end == null) {
             throw new IllegalArgumentException("Не указана дата конца периода");
         }
         if (start.isAfter(end)) {
