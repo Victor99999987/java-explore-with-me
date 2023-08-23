@@ -297,7 +297,7 @@ public class EventServiceImpl implements EventService {
 
     @Transactional
     @Override
-    public List<EventFullDto> getAllEventsByFilter(String text, List<Long> categories, boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd, boolean onlyAvailable, String sort, int from, int size, HttpServletRequest httpServletRequest) {
+    public List<EventFullDto> getAllEventsByFilter(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd, boolean onlyAvailable, String sort, int from, int size, HttpServletRequest httpServletRequest) {
         if (rangeStart != null && rangeEnd != null) {
             if (rangeStart.isAfter(rangeEnd)) {
                 throw new IllegalArgumentException("Дата окончания периода раньше даты начала.");

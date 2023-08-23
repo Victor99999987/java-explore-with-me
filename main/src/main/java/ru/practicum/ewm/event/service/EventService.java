@@ -26,7 +26,7 @@ public interface EventService {
 
     EventRequestStatusUpdateResult patchRequestStatusesByUserIdAndEventId(Long userId, Long eventId, EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest);
 
-    List<EventFullDto> getAllEventsByFilter(String text, List<Long> categories, boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd, boolean onlyAvailable, String sort, int from, int size, HttpServletRequest request);
+    List<EventFullDto> getAllEventsByFilter(String text, List<Long> categories, Boolean paid, LocalDateTime rangeStart, LocalDateTime rangeEnd, boolean onlyAvailable, String sort, int from, int size, HttpServletRequest request);
 
     List<EventFullDto> getAllEventsByAdminFilter(List<Long> users, List<StateEvent> states, List<Long> categories, LocalDateTime rangeStart, LocalDateTime rangeEnd, int from, int size);
 
