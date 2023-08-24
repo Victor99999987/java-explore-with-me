@@ -6,7 +6,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.practicum.ewm.common.ConflictException;
 import ru.practicum.ewm.common.NotFoundException;
 import ru.practicum.ewm.common.Verify;
 import ru.practicum.ewm.user.dto.NewUserRequest;
@@ -53,7 +52,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(Long userId) {
-        if(!userRepository.existsById(userId)){
+        if (!userRepository.existsById(userId)) {
             throw new NotFoundException(String.format("Пользователь с id %d не найден", userId));
         }
         userRepository.deleteById(userId);

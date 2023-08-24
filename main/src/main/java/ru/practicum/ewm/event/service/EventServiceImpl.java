@@ -39,7 +39,6 @@ import ru.practicum.ewm.user.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -222,7 +221,6 @@ public class EventServiceImpl implements EventService {
     private Map<String, Long> getViews(List<Event> events) {
         LocalDateTime start;
         LocalDateTime end = LocalDateTime.now();
-        ;
         List<String> uris = null;
 
         if (events == null || events.size() == 0) {

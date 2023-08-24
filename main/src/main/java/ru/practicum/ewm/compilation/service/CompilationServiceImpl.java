@@ -44,7 +44,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public void deleteCompilationById(Long compId) {
-        if(!compilationRepository.existsById(compId)){
+        if (!compilationRepository.existsById(compId)) {
             throw new NotFoundException(String.format("Подборка с id %d не найдена", compId));
         }
         compilationRepository.deleteById(compId);
@@ -58,7 +58,7 @@ public class CompilationServiceImpl implements CompilationService {
             compilation.setPinned(updateCompilationRequest.getPinned());
         }
         if (updateCompilationRequest.getTitle() != null) {
-            if(updateCompilationRequest.getTitle().isBlank()){
+            if (updateCompilationRequest.getTitle().isBlank()) {
                 throw new IllegalArgumentException("Поле title не должно состоять из пробелов");
             }
             compilation.setTitle(updateCompilationRequest.getTitle());
