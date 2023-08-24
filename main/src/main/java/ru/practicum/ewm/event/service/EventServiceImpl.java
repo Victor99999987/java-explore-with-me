@@ -213,9 +213,11 @@ public class EventServiceImpl implements EventService {
             throw new NotFoundException(String.format("Событие с id %d недоступно для просмотра", id));
         }
 
+        EventFullDto result = toEventFullDtoWithCounts(event);
         sendStat(request);
 
-        return toEventFullDtoWithCounts(event);
+        //return toEventFullDtoWithCounts(event);
+        return result;
     }
 
     private Map<String, Long> getViews(List<Event> events) {
@@ -337,9 +339,11 @@ public class EventServiceImpl implements EventService {
 
         List<Event> events = eventRepository.findAllPublicByFilter(text, categories, paid, rangeStart, rangeEnd, pageable);
 
+        List<EventFullDto> result = toEventFullDtoWithCounts(events);
         sendStat(httpServletRequest);
 
-        return toEventFullDtoWithCounts(events);
+        //return toEventFullDtoWithCounts(events);
+        return result;
     }
 
     @Transactional
