@@ -21,7 +21,7 @@ public class Compilation {
             joinColumns = {@JoinColumn(name = "compilation_id")},
             inverseJoinColumns = {@JoinColumn(name = "event_id")}
     )
-    Set<Event> events = new HashSet<>();
+    private Set<Event> events = new HashSet<>();
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

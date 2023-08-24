@@ -12,8 +12,7 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @Builder
 public class NewCategoryDto {
-    @NotNull(message = "название должно быть указано")
-    @NotBlank(message = "название не должно состоять из пробелов")
+    @NotBlank(message = "название должно быть указано и не должно состоять из пробелов")
     @Size(min = 1, max = 50, message = "название должно быть от 1 до 50 символов")
     private String name;
 }

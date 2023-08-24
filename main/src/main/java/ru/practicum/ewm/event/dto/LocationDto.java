@@ -2,6 +2,8 @@ package ru.practicum.ewm.event.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -10,9 +12,11 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Builder
 public class LocationDto {
-    @NotNull(message = "поле lat должно быть указано")
+    @Min(-90)
+    @Max(90)
     private double lat;
 
-    @NotNull(message = "поле lon должно быть указано")
+    @Min(-180)
+    @Max(180)
     private double lon;
 }

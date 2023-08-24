@@ -1,5 +1,6 @@
 package ru.practicum.ewm.compilation.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -14,13 +15,10 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class AdminCompilationController {
 
     private final CompilationService compilationService;
-
-    public AdminCompilationController(CompilationService compilationService) {
-        this.compilationService = compilationService;
-    }
 
     @PostMapping("/admin/compilations")
     @ResponseStatus(HttpStatus.CREATED)

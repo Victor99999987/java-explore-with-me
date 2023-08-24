@@ -2,7 +2,9 @@ package ru.practicum.ewm.request.repository;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import ru.practicum.ewm.event.model.Event;
+import ru.practicum.ewm.request.model.CountRequest;
 import ru.practicum.ewm.request.model.Request;
 import ru.practicum.ewm.request.model.StateRequest;
 import ru.practicum.ewm.user.model.User;
@@ -32,4 +34,11 @@ public interface RequestRepository extends JpaRepository<Request, Long> {
     List<Request> findAllByEvent(Event event, Sort sortById);
 
     List<Request> findAllByEventInAndStatus(List<Event> events, StateRequest confirmed);
+
+    @Query("select new ru.practicum.ewm.request.model.CountRequest(r.event.id, count(r.id)) " +
+            "from Request as r " +
+            "where r.status = 'CONFIRMED' " +
+            "and event in :events " +
+            "group by r.event.id")
+    List<CountRequest> findAllCountsByConfirmedEventIn(List<Event> events);
 }

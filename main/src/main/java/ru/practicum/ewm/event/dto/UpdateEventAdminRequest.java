@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewm.event.model.StateActionAdmin;
 
+import javax.validation.Valid;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -20,13 +23,16 @@ public class UpdateEventAdminRequest {
     @Size(min = 20, max = 7000, message = "поле description должно быть от 20 до 7000 символов")
     private String description;
 
+    @Future
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
+    @Valid
     private LocationDto location;
 
     private Boolean paid;
 
+    @PositiveOrZero
     private Integer participantLimit;
 
     private Boolean requestModeration;

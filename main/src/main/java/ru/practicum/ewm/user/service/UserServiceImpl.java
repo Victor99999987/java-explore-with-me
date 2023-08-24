@@ -1,5 +1,6 @@
 package ru.practicum.ewm.user.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,14 +19,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
     private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     @Override
     public List<UserDto> getAllUsers(List<Long> ids, int from, int size) {
@@ -48,9 +46,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDto addNewUser(NewUserRequest newUserRequest) {
         User user = UserMapper.toUser(newUserRequest);
-        if (userRepository.existsByName(user.getName())) {
-            throw new ConflictException("Имя пользователя уже занято");
-        }
         user = userRepository.save(user);
         return UserMapper.toUserDto(user);
     }
@@ -58,7 +53,9 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void deleteUser(Long userId) {
-        getUserById(userId);
+        if(!userRepository.existsById(userId)){
+            throw new NotFoundException(String.format("Пользователь с id %d не найден", userId));
+        }
         userRepository.deleteById(userId);
     }
 

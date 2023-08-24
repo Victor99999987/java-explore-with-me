@@ -1,5 +1,6 @@
 package ru.practicum.ewm.compilation.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,15 +23,11 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CompilationServiceImpl implements CompilationService {
     private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
     private final EventRepository eventRepository;
     private final CompilationRepository compilationRepository;
-
-    public CompilationServiceImpl(EventRepository eventRepository, CompilationRepository compilationRepository) {
-        this.eventRepository = eventRepository;
-        this.compilationRepository = compilationRepository;
-    }
 
     @Transactional
     @Override
@@ -47,7 +44,9 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public void deleteCompilationById(Long compId) {
-        getCompilationById(compId);
+        if(!compilationRepository.existsById(compId)){
+            throw new NotFoundException(String.format("Подборка с id %d не найдена", compId));
+        }
         compilationRepository.deleteById(compId);
     }
 
@@ -59,6 +58,9 @@ public class CompilationServiceImpl implements CompilationService {
             compilation.setPinned(updateCompilationRequest.getPinned());
         }
         if (updateCompilationRequest.getTitle() != null) {
+            if(updateCompilationRequest.getTitle().isBlank()){
+                throw new IllegalArgumentException("Поле title не должно состоять из пробелов");
+            }
             compilation.setTitle(updateCompilationRequest.getTitle());
         }
         if (updateCompilationRequest.getEvents() != null) {

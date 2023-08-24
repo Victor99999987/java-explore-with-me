@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @UtilityClass
 public class EventMapper {
 
-    public static EventShortDto toEventShortDto(Event event) {
+    public EventShortDto toEventShortDto(Event event) {
         return EventShortDto.builder()
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
@@ -25,7 +25,7 @@ public class EventMapper {
                 .build();
     }
 
-    public static EventFullDto toEventFullDto(Event event) {
+    public EventFullDto toEventFullDto(Event event) {
         return EventFullDto.builder()
                 .annotation(event.getAnnotation())
                 .category(CategoryMapper.toCategoryDto(event.getCategory()))
@@ -44,7 +44,7 @@ public class EventMapper {
                 .build();
     }
 
-    public static Event toEvent(NewEventDto newEventDto) {
+    public Event toEvent(NewEventDto newEventDto) {
         return Event.builder()
                 .annotation(newEventDto.getAnnotation())
                 .created(LocalDateTime.now())

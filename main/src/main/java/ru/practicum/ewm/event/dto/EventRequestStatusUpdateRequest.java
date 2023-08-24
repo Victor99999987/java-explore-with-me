@@ -13,8 +13,8 @@ import java.util.List;
 @Builder
 public class EventRequestStatusUpdateRequest {
     @NotNull
-    List<Long> requestIds;
+    private List<Long> requestIds;
 
     @NotNull
-    StateUpdateRequest status;
+    private StateUpdateRequest status;
 }

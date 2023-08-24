@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import ru.practicum.ewm.event.model.StateActionUser;
 
+import javax.validation.Valid;
 import javax.validation.constraints.Future;
+import javax.validation.constraints.PositiveOrZero;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
@@ -26,10 +28,12 @@ public class UpdateEventUserRequest {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime eventDate;
 
+    @Valid
     private LocationDto location;
 
     private Boolean paid;
 
+    @PositiveOrZero
     private Integer participantLimit;
 
     private Boolean requestModeration;

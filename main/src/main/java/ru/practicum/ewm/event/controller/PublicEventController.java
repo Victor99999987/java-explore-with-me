@@ -1,5 +1,6 @@
 package ru.practicum.ewm.event.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -11,18 +12,17 @@ import ru.practicum.ewm.event.dto.EventFullDto;
 import ru.practicum.ewm.event.service.EventService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Validated
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class PublicEventController {
     private final EventService eventService;
-
-    public PublicEventController(EventService eventService) {
-        this.eventService = eventService;
-    }
 
     @GetMapping("/events")
     List<EventFullDto> getAllEventsByFilter(@RequestParam(required = false) String text,
@@ -32,8 +32,8 @@ public class PublicEventController {
                                             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
                                             @RequestParam(defaultValue = "false") boolean onlyAvailable,
                                             @RequestParam(defaultValue = "EVENT_DATE") String sort,
-                                            @RequestParam(defaultValue = "0") int from,
-                                            @RequestParam(defaultValue = "10") int size,
+                                            @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                            @RequestParam(defaultValue = "10") @Positive int size,
                                             HttpServletRequest request) {
         return eventService.getAllEventsByFilter(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
     }

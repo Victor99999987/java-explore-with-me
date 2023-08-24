@@ -1,5 +1,6 @@
 package ru.practicum.ewm.event.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.validation.annotation.Validated;
@@ -10,18 +11,17 @@ import ru.practicum.ewm.event.model.StateEvent;
 import ru.practicum.ewm.event.service.EventService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.PositiveOrZero;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Validated
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class AdminEventController {
     private final EventService eventService;
-
-    public AdminEventController(EventService eventService) {
-        this.eventService = eventService;
-    }
 
     @GetMapping("/admin/events")
     List<EventFullDto> getAllEventsByAdminFilter(@RequestParam(required = false) List<Long> users,
@@ -29,8 +29,8 @@ public class AdminEventController {
                                                  @RequestParam(required = false) List<Long> categories,
                                                  @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeStart,
                                                  @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
-                                                 @RequestParam(defaultValue = "0") int from,
-                                                 @RequestParam(defaultValue = "10") int size) {
+                                                 @RequestParam(defaultValue = "0") @PositiveOrZero int from,
+                                                 @RequestParam(defaultValue = "10") @Positive int size) {
         return eventService.getAllEventsByAdminFilter(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 

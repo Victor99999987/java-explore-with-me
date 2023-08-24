@@ -3,6 +3,7 @@ package ru.practicum.ewm.common;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
@@ -97,6 +98,18 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public ApiError handleDataIntegrityViolationException(final DataIntegrityViolationException e) {
+        log.debug("Получен статус 409 {} \n {}", e.getMessage(), e.getStackTrace());
+        return ApiError.builder()
+                .message(e.getMessage())
+                .reason(HttpStatus.CONFLICT.getReasonPhrase())
+                .status(HttpStatus.CONFLICT)
+                .timestamp(LocalDateTime.now())
+                .build();
+    }
+
+    @ExceptionHandler
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ApiError handleNotFoundException(final NotFoundException e) {
         log.debug("Получен статус 404 {} \n {}", e.getMessage(), e.getStackTrace());
@@ -107,6 +120,7 @@ public class ErrorHandler {
                 .timestamp(LocalDateTime.now())
                 .build();
     }
+
 
     @ExceptionHandler
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

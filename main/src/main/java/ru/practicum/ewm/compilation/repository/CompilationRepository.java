@@ -8,7 +8,6 @@ import ru.practicum.ewm.compilation.model.Compilation;
 
 import java.util.List;
 
-@Repository
 public interface CompilationRepository extends JpaRepository<Compilation, Long> {
 
     Page<Compilation> findAll(Pageable pageable);

@@ -1,5 +1,6 @@
 package ru.practicum.ewm.category.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,24 +20,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class CategoryServiceImpl implements CategoryService {
 
     private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
     private final CategoryRepository categoryRepository;
     private final EventRepository eventRepository;
 
-    public CategoryServiceImpl(CategoryRepository categoryRepository, EventRepository eventRepository) {
-        this.categoryRepository = categoryRepository;
-        this.eventRepository = eventRepository;
-    }
-
     @Transactional
     @Override
     public CategoryDto addNewCategory(NewCategoryDto newCategoryDto) {
         Category category = CategoryMapper.toCategory(newCategoryDto);
-        if (categoryRepository.existsByName(category.getName())) {
-            throw new ConflictException("Название категории уже существует");
-        }
         category = categoryRepository.save(category);
         return CategoryMapper.toCategoryDto(category);
     }
@@ -55,9 +49,6 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDto patchCategory(Long catId, NewCategoryDto newCategoryDto) {
         Category category = getCategoryById(catId);
-        if (categoryRepository.existsByNameAndIdNot(newCategoryDto.getName(), category.getId())) {
-            throw new ConflictException("Название категории уже существует");
-        }
         category.setName(newCategoryDto.getName());
         category = categoryRepository.save(category);
         return CategoryMapper.toCategoryDto(category);

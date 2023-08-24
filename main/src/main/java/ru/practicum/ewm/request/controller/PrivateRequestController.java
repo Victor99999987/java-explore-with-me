@@ -1,5 +1,6 @@
 package ru.practicum.ewm.request.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -9,15 +10,11 @@ import ru.practicum.ewm.request.service.RequestService;
 
 import java.util.List;
 
-@Validated
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class PrivateRequestController {
     private final RequestService requestService;
-
-    public PrivateRequestController(RequestService requestService) {
-        this.requestService = requestService;
-    }
 
     @GetMapping("/users/{userId}/requests")
     List<ParticipationRequestDto> getAllRequestByUserId(@PathVariable Long userId) {

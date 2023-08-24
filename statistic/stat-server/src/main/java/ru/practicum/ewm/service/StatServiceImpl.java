@@ -26,12 +26,6 @@ public class StatServiceImpl implements StatService {
 
     @Override
     public List<ViewStatsDto> getStats(LocalDateTime start, LocalDateTime end, List<String> uris, boolean unique) {
-        if (start == null) {
-            throw new IllegalArgumentException("Не указана дата начала периода");
-        }
-        if (end == null) {
-            throw new IllegalArgumentException("Не указана дата конца периода");
-        }
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("Дата начала периода не может быть позже конца периода");
         }

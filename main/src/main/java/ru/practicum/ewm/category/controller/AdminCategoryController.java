@@ -1,5 +1,6 @@
 package ru.practicum.ewm.category.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.annotation.Validated;
@@ -13,12 +14,9 @@ import javax.validation.Valid;
 @Validated
 @RestController
 @Slf4j
+@RequiredArgsConstructor
 public class AdminCategoryController {
     private final CategoryService categoryService;
-
-    public AdminCategoryController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @PostMapping("/admin/categories")
     @ResponseStatus(HttpStatus.CREATED)

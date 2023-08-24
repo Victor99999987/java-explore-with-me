@@ -1,5 +1,6 @@
 package ru.practicum.ewm.request.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,19 +23,13 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class RequestServiceImpl implements RequestService {
 
     private static final Sort SORT_BY_ID = Sort.by(Sort.Direction.ASC, "id");
     private final UserRepository userRepository;
     private final EventRepository eventRepository;
     private final RequestRepository requestRepository;
-
-    public RequestServiceImpl(UserRepository userRepository, EventRepository eventRepository,
-                              RequestRepository requestRepository) {
-        this.userRepository = userRepository;
-        this.eventRepository = eventRepository;
-        this.requestRepository = requestRepository;
-    }
 
     @Transactional
     @Override
