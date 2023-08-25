@@ -216,7 +216,6 @@ public class EventServiceImpl implements EventService {
         EventFullDto result = toEventFullDtoWithCounts(event);
         sendStat(request);
 
-        //return toEventFullDtoWithCounts(event);
         return result;
     }
 
@@ -342,7 +341,6 @@ public class EventServiceImpl implements EventService {
         List<EventFullDto> result = toEventFullDtoWithCounts(events);
         sendStat(httpServletRequest);
 
-        //return toEventFullDtoWithCounts(events);
         return result;
     }
 
@@ -457,7 +455,6 @@ public class EventServiceImpl implements EventService {
     }
 
     private List<EventFullDto> toEventFullDtoWithCounts(List<Event> events) {
-        //List<Request> requests = requestRepository.findAllByEventInAndStatus(events, StateRequest.CONFIRMED);
         List<CountRequest> countRequests = requestRepository.findAllCountsByConfirmedEventIn(events);
         Map<Long, Long> counts = countRequests.stream()
                 .collect(Collectors.toMap((entry) -> entry.getEventId(), (entry) -> entry.getCount()));
@@ -469,9 +466,6 @@ public class EventServiceImpl implements EventService {
         Map<String, Long> stats = getViews(events);
 
         for (EventFullDto eventFullDto : eventFullDtos) {
-            //Long confirmedRequests = requests.stream()
-            //        .filter(r -> Objects.equals(r.getEvent().getId(), eventFullDto.getId()))
-            //        .count();
             Long confirmedRequests = counts.getOrDefault(eventFullDto.getId(), 0L);
             eventFullDto.setConfirmedRequests(confirmedRequests);
             Long views = stats.getOrDefault("/events/" + eventFullDto.getId(), 0L);
