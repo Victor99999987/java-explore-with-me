@@ -29,9 +29,9 @@ public class StatServiceImpl implements StatService {
         if (start.isAfter(end)) {
             throw new IllegalArgumentException("Дата начала периода не может быть позже конца периода");
         }
-        if (start.equals(end)) {
-            throw new IllegalArgumentException("Дата начала и конца периода совпадают");
-        }
+//        if (start.equals(end)) {
+//            throw new IllegalArgumentException("Дата начала и конца периода совпадают");
+//        }
 
         if (uris == null) {
             if (unique) {
