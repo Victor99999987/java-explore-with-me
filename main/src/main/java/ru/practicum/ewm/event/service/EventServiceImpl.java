@@ -335,7 +335,6 @@ public class EventServiceImpl implements EventService {
         QEvent qEvent = QEvent.event;
         // BooleanExpression predicate = qEvent.state.eq(StateEvent.PUBLISHED);
 
-
         Predicate predicate = qEvent.state.eq(StateEvent.PUBLISHED);
         if (text != null) {
             predicate = ((qEvent.annotation.containsIgnoreCase(text))
@@ -355,12 +354,12 @@ public class EventServiceImpl implements EventService {
             predicate = qEvent.eventDate.before(rangeEnd).and(predicate);
         }
 
-        if (rangeStart == null) {
-            rangeStart = MIN_DATE;
-        }
-        if (rangeEnd == null) {
-            rangeEnd = MAX_DATE;
-        }
+//        if (rangeStart == null) {
+//            rangeStart = MIN_DATE;
+//        }
+//        if (rangeEnd == null) {
+//            rangeEnd = MAX_DATE;
+//        }
 
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
