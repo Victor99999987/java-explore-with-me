@@ -3,10 +3,8 @@ package ru.practicum.ewm.event.service;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.querydsl.core.types.Predicate;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -91,13 +89,13 @@ public class EventServiceImpl implements EventService {
         if (LocalDateTime.now().plusHours(2).isAfter(eventDate)) {
             throw new IllegalArgumentException("Дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента");
         }
-        if(newEventDto.getPaid()==null){
+        if (newEventDto.getPaid() == null) {
             newEventDto.setPaid(false);
         }
-        if(newEventDto.getParticipantLimit()==null){
+        if (newEventDto.getParticipantLimit() == null) {
             newEventDto.setParticipantLimit(0);
         }
-        if(newEventDto.getRequestModeration()==null){
+        if (newEventDto.getRequestModeration() == null) {
             newEventDto.setRequestModeration(true);
         }
 
@@ -334,26 +332,26 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        QEvent qEvent=QEvent.event;
-       // BooleanExpression predicate = qEvent.state.eq(StateEvent.PUBLISHED);
+        QEvent qEvent = QEvent.event;
+        // BooleanExpression predicate = qEvent.state.eq(StateEvent.PUBLISHED);
 
 
         Predicate predicate = qEvent.state.eq(StateEvent.PUBLISHED);
-        if(text!=null){
+        if (text != null) {
             predicate = ((qEvent.annotation.containsIgnoreCase(text))
                     .or(qEvent.description.containsIgnoreCase(text)))
                     .and(predicate);
         }
-        if(categories!=null && categories.size()>0){
+        if (categories != null && categories.size() > 0) {
             predicate = qEvent.category.id.in(categories);
         }
-        if(paid!=null){
+        if (paid != null) {
             predicate = qEvent.paid.eq(paid).and(predicate);
         }
-        if(rangeStart!=null){
+        if (rangeStart != null) {
             predicate = qEvent.eventDate.after(rangeStart).and(predicate);
         }
-        if(rangeEnd!=null){
+        if (rangeEnd != null) {
             predicate = qEvent.eventDate.before(rangeEnd).and(predicate);
         }
 
@@ -384,21 +382,21 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        QEvent qEvent=QEvent.event;
+        QEvent qEvent = QEvent.event;
         Predicate predicate = qEvent.id.isNotNull();
-        if(users!=null && users.size()>0){
+        if (users != null && users.size() > 0) {
             predicate = qEvent.initiator.id.in(users).and(predicate);
         }
-        if(states!=null && states.size()>0){
+        if (states != null && states.size() > 0) {
             predicate = qEvent.state.in(states).and(predicate);
         }
-        if(categories!=null && categories.size()>0){
+        if (categories != null && categories.size() > 0) {
             predicate = qEvent.category.id.in(categories).and(predicate);
         }
-        if(rangeStart!=null){
+        if (rangeStart != null) {
             predicate = qEvent.eventDate.after(rangeStart).and(predicate);
         }
-        if(rangeEnd!=null){
+        if (rangeEnd != null) {
             predicate = qEvent.eventDate.before(rangeEnd).and(predicate);
         }
 
