@@ -8,7 +8,6 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.practicum.ewm.common.NotFoundException;
-import ru.practicum.ewm.common.Verify;
 import ru.practicum.ewm.compilation.dto.CompilationDto;
 import ru.practicum.ewm.compilation.dto.NewCompilationDto;
 import ru.practicum.ewm.compilation.dto.UpdateCompilationRequest;
@@ -33,7 +32,7 @@ public class CompilationServiceImpl implements CompilationService {
     @Override
     public CompilationDto addNewCompilation(NewCompilationDto newCompilationDto) {
         Compilation compilation = CompilationMapper.toCompilation(newCompilationDto);
-        if (newCompilationDto.getEvents().size() > 0) {
+        if (newCompilationDto.getEvents() != null && newCompilationDto.getEvents().size() > 0) {
             Set<Event> events = eventRepository.findAllByIdIn(newCompilationDto.getEvents());
             compilation.setEvents(events);
         }
@@ -74,8 +73,6 @@ public class CompilationServiceImpl implements CompilationService {
 
     @Override
     public List<CompilationDto> getAllCompilations(@Nullable Boolean pinned, int from, int size) {
-        Verify.verifyFromAndSize(from, size);
-
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
         List<Compilation> compilations;

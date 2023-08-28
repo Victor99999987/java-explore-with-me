@@ -35,13 +35,14 @@ public class PublicEventController {
                                             @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                             @RequestParam(defaultValue = "10") @Positive int size,
                                             HttpServletRequest request) {
+        log.info("Получен запрос на эндпоинт GET /events");
         return eventService.getAllEventsByFilter(text, categories, paid, rangeStart, rangeEnd, onlyAvailable, sort, from, size, request);
     }
 
     @GetMapping("/events/{id}")
     EventFullDto getPiblicEventById(@PathVariable Long id,
                                     HttpServletRequest request) {
-        log.info("Получен запрос на эндпоинт {}", "GET /events/" + id);
+        log.info("Получен запрос на эндпоинт GET /events/{}", id);
         return eventService.getPiblicEventById(id, request);
     }
 

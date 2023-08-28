@@ -16,7 +16,6 @@ import ru.practicum.ewm.category.service.CategoryService;
 import ru.practicum.ewm.client.StatClient;
 import ru.practicum.ewm.common.ConflictException;
 import ru.practicum.ewm.common.NotFoundException;
-import ru.practicum.ewm.common.Verify;
 import ru.practicum.ewm.dto.EndpointHitDto;
 import ru.practicum.ewm.dto.ViewStatsDto;
 import ru.practicum.ewm.event.dto.*;
@@ -65,7 +64,6 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventShortDto> getAllEventByUserId(Long userId, int from, int size) {
         User user = userService.getUserById(userId);
-        Verify.verifyFromAndSize(from, size);
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
         List<Event> events = eventRepository.findAllByInitiator(user, pageable);
         return events.stream()

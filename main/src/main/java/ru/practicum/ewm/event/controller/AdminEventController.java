@@ -31,12 +31,14 @@ public class AdminEventController {
                                                  @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss") LocalDateTime rangeEnd,
                                                  @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                                  @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Получен запрос на эндпоинт GET /admin/events");
         return eventService.getAllEventsByAdminFilter(users, states, categories, rangeStart, rangeEnd, from, size);
     }
 
     @PatchMapping("/admin/events/{eventId}")
     EventFullDto patchEventById(@PathVariable Long eventId,
                                 @Valid @RequestBody UpdateEventAdminRequest updateEventAdminRequest) {
+        log.info("Получен запрос на эндпоинт PATCH /admin/events/{}", eventId);
         return eventService.patchEventById(eventId, updateEventAdminRequest);
     }
 

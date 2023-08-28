@@ -25,6 +25,7 @@ public class PrivateEventController {
     List<EventShortDto> getAllEventByUserId(@PathVariable Long userId,
                                             @RequestParam(defaultValue = "0") @PositiveOrZero int from,
                                             @RequestParam(defaultValue = "10") @Positive int size) {
+        log.info("Получен запрос на эндпоинт GET /users/{}/events", userId);
         return eventService.getAllEventByUserId(userId, from, size);
     }
 
@@ -32,12 +33,14 @@ public class PrivateEventController {
     @ResponseStatus(HttpStatus.CREATED)
     EventFullDto addNewEvent(@PathVariable Long userId,
                              @Valid @RequestBody NewEventDto newEventDto) {
+        log.info("Получен запрос на эндпоинт POST /users/{}/events", userId);
         return eventService.addNewEvent(userId, newEventDto);
     }
 
     @GetMapping("/users/{userId}/events/{eventId}")
     EventFullDto getEventByUserIdAndEventId(@PathVariable Long userId,
                                             @PathVariable Long eventId) {
+        log.info("Получен запрос на эндпоинт GET /users/{}/events/{}", userId, eventId);
         return eventService.getEventByUserIdAndEventId(userId, eventId);
     }
 
@@ -45,6 +48,7 @@ public class PrivateEventController {
     EventFullDto patchEventByUserIdAndEventId(@PathVariable Long userId,
                                               @PathVariable Long eventId,
                                               @Valid @RequestBody UpdateEventUserRequest updateEventUserRequest) {
+        log.info("Получен запрос на эндпоинт PATCH /users/{}/events/{}", userId, eventId);
         return eventService.patchEventByUserIdAndEventId(userId, eventId, updateEventUserRequest);
     }
 
@@ -52,6 +56,7 @@ public class PrivateEventController {
     @GetMapping("/users/{userId}/events/{eventId}/requests")
     List<ParticipationRequestDto> getRequestsByUserIdAndEventId(@PathVariable Long userId,
                                                                 @PathVariable Long eventId) {
+        log.info("Получен запрос на эндпоинт GET /users/{}/events/{}/requests", userId, eventId);
         return eventService.getRequestsByUserIdAndEventId(userId, eventId);
     }
 
@@ -59,8 +64,8 @@ public class PrivateEventController {
     EventRequestStatusUpdateResult patchRequestStatusesByUserIdAndEventId(@PathVariable Long userId,
                                                                           @PathVariable Long eventId,
                                                                           @Valid @RequestBody EventRequestStatusUpdateRequest eventRequestStatusUpdateRequest) {
+        log.info("Получен запрос на эндпоинт PATCH /users/{}/events/{}/requests", userId, eventId);
         return eventService.patchRequestStatusesByUserIdAndEventId(userId, eventId, eventRequestStatusUpdateRequest);
     }
-
 
 }

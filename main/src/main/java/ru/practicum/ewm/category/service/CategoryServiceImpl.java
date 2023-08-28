@@ -13,7 +13,6 @@ import ru.practicum.ewm.category.model.Category;
 import ru.practicum.ewm.category.repository.CategoryRepository;
 import ru.practicum.ewm.common.ConflictException;
 import ru.practicum.ewm.common.NotFoundException;
-import ru.practicum.ewm.common.Verify;
 import ru.practicum.ewm.event.repository.EventRepository;
 
 import java.util.List;
@@ -56,8 +55,6 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<CategoryDto> getAllCategories(int from, int size) {
-        Verify.verifyFromAndSize(from, size);
-
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
         return categoryRepository.findAll(pageable).stream()
