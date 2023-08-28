@@ -333,7 +333,6 @@ public class EventServiceImpl implements EventService {
         }
 
         QEvent qEvent = QEvent.event;
-        // BooleanExpression predicate = qEvent.state.eq(StateEvent.PUBLISHED);
 
         Predicate predicate = qEvent.state.eq(StateEvent.PUBLISHED);
         if (text != null) {
@@ -354,18 +353,10 @@ public class EventServiceImpl implements EventService {
             predicate = qEvent.eventDate.before(rangeEnd).and(predicate);
         }
 
-//        if (rangeStart == null) {
-//            rangeStart = MIN_DATE;
-//        }
-//        if (rangeEnd == null) {
-//            rangeEnd = MAX_DATE;
-//        }
-
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
-//        List<Event> events = eventRepository.findAllPublicByFilter(text, categories, paid, rangeStart, rangeEnd, pageable);
         List<Event> events = eventRepository.findAll(predicate, pageable).getContent();
-//Page<Event> events = eventRepository.findAll(predicate, pageable);
+
         List<EventFullDto> result = toEventFullDtoWithCounts(events);
         sendStat(httpServletRequest);
 
@@ -399,16 +390,7 @@ public class EventServiceImpl implements EventService {
             predicate = qEvent.eventDate.before(rangeEnd).and(predicate);
         }
 
-//        if (rangeStart == null) {
-//            rangeStart = MIN_DATE;
-//        }
-//        if (rangeEnd == null) {
-//            rangeEnd = MAX_DATE;
-//        }
-
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
-
-//        List<Event> events = eventRepository.findAllByAdminFilter(users, states, categories, rangeStart, rangeEnd, pageable);
 
         List<Event> events = eventRepository.findAll(predicate, pageable).getContent();
         return toEventFullDtoWithCounts(events);
