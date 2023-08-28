@@ -35,12 +35,12 @@ public class NewEventDto {
     @Valid
     private LocationDto location;
 
-    private boolean paid = false;
+    private Boolean paid;
 
     @PositiveOrZero
-    private int participantLimit = 0;
+    private Integer participantLimit;
 
-    private boolean requestModeration = true;
+    private Boolean requestModeration;
 
     @NotBlank(message = "поле title должно быть указано")
     @Size(min = 3, max = 120, message = "поле title должно быть от 3 до 120 символов")

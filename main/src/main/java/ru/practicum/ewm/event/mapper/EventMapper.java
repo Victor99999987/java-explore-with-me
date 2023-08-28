@@ -51,9 +51,9 @@ public class EventMapper {
                 .description(newEventDto.getDescription())
                 .eventDate(newEventDto.getEventDate())
                 .location(LocationMapper.toLocation(newEventDto.getLocation()))
-                .paid(newEventDto.isPaid())
+                .paid(newEventDto.getPaid())
                 .participantLimit(newEventDto.getParticipantLimit())
-                .requestModeration(newEventDto.isRequestModeration())
+                .requestModeration(newEventDto.getRequestModeration())
                 .title(newEventDto.getTitle())
                 .build();
     }

@@ -2,8 +2,11 @@ package ru.practicum.ewm.event.service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.querydsl.core.types.Predicate;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -21,10 +24,7 @@ import ru.practicum.ewm.dto.ViewStatsDto;
 import ru.practicum.ewm.event.dto.*;
 import ru.practicum.ewm.event.mapper.EventMapper;
 import ru.practicum.ewm.event.mapper.LocationMapper;
-import ru.practicum.ewm.event.model.Event;
-import ru.practicum.ewm.event.model.Location;
-import ru.practicum.ewm.event.model.StateEvent;
-import ru.practicum.ewm.event.model.StateUpdateRequest;
+import ru.practicum.ewm.event.model.*;
 import ru.practicum.ewm.event.repository.EventRepository;
 import ru.practicum.ewm.event.repository.LocationRepository;
 import ru.practicum.ewm.request.dto.ParticipationRequestDto;
@@ -90,6 +90,15 @@ public class EventServiceImpl implements EventService {
         LocalDateTime eventDate = newEventDto.getEventDate();
         if (LocalDateTime.now().plusHours(2).isAfter(eventDate)) {
             throw new IllegalArgumentException("Дата и время на которые намечено событие не может быть раньше, чем через два часа от текущего момента");
+        }
+        if(newEventDto.getPaid()==null){
+            newEventDto.setPaid(false);
+        }
+        if(newEventDto.getParticipantLimit()==null){
+            newEventDto.setParticipantLimit(0);
+        }
+        if(newEventDto.getRequestModeration()==null){
+            newEventDto.setRequestModeration(true);
         }
 
         Event event = EventMapper.toEvent(newEventDto);
@@ -325,6 +334,29 @@ public class EventServiceImpl implements EventService {
             }
         }
 
+        QEvent qEvent=QEvent.event;
+       // BooleanExpression predicate = qEvent.state.eq(StateEvent.PUBLISHED);
+
+
+        Predicate predicate = qEvent.state.eq(StateEvent.PUBLISHED);
+        if(text!=null){
+            predicate = ((qEvent.annotation.containsIgnoreCase(text))
+                    .or(qEvent.description.containsIgnoreCase(text)))
+                    .and(predicate);
+        }
+        if(categories!=null && categories.size()>0){
+            predicate = qEvent.category.id.in(categories);
+        }
+        if(paid!=null){
+            predicate = qEvent.paid.eq(paid).and(predicate);
+        }
+        if(rangeStart!=null){
+            predicate = qEvent.eventDate.after(rangeStart).and(predicate);
+        }
+        if(rangeEnd!=null){
+            predicate = qEvent.eventDate.before(rangeEnd).and(predicate);
+        }
+
         if (rangeStart == null) {
             rangeStart = MIN_DATE;
         }
@@ -334,8 +366,9 @@ public class EventServiceImpl implements EventService {
 
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
-        List<Event> events = eventRepository.findAllPublicByFilter(text, categories, paid, rangeStart, rangeEnd, pageable);
-
+//        List<Event> events = eventRepository.findAllPublicByFilter(text, categories, paid, rangeStart, rangeEnd, pageable);
+        List<Event> events = eventRepository.findAll(predicate, pageable).getContent();
+//Page<Event> events = eventRepository.findAll(predicate, pageable);
         List<EventFullDto> result = toEventFullDtoWithCounts(events);
         sendStat(httpServletRequest);
 
@@ -351,17 +384,36 @@ public class EventServiceImpl implements EventService {
             }
         }
 
-        if (rangeStart == null) {
-            rangeStart = MIN_DATE;
+        QEvent qEvent=QEvent.event;
+        Predicate predicate = qEvent.id.isNotNull();
+        if(users!=null && users.size()>0){
+            predicate = qEvent.initiator.id.in(users).and(predicate);
         }
-        if (rangeEnd == null) {
-            rangeEnd = MAX_DATE;
+        if(states!=null && states.size()>0){
+            predicate = qEvent.state.in(states).and(predicate);
         }
+        if(categories!=null && categories.size()>0){
+            predicate = qEvent.category.id.in(categories).and(predicate);
+        }
+        if(rangeStart!=null){
+            predicate = qEvent.eventDate.after(rangeStart).and(predicate);
+        }
+        if(rangeEnd!=null){
+            predicate = qEvent.eventDate.before(rangeEnd).and(predicate);
+        }
+
+//        if (rangeStart == null) {
+//            rangeStart = MIN_DATE;
+//        }
+//        if (rangeEnd == null) {
+//            rangeEnd = MAX_DATE;
+//        }
 
         Pageable pageable = PageRequest.of(from > 0 ? from / size : 0, size, SORT_BY_ID);
 
-        List<Event> events = eventRepository.findAllByAdminFilter(users, states, categories, rangeStart, rangeEnd, pageable);
+//        List<Event> events = eventRepository.findAllByAdminFilter(users, states, categories, rangeStart, rangeEnd, pageable);
 
+        List<Event> events = eventRepository.findAll(predicate, pageable).getContent();
         return toEventFullDtoWithCounts(events);
     }
 

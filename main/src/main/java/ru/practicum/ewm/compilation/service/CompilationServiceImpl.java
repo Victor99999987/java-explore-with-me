@@ -17,6 +17,7 @@ import ru.practicum.ewm.compilation.repository.CompilationRepository;
 import ru.practicum.ewm.event.model.Event;
 import ru.practicum.ewm.event.repository.EventRepository;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -31,6 +32,12 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public CompilationDto addNewCompilation(NewCompilationDto newCompilationDto) {
+        if(newCompilationDto.getEvents()==null){
+            newCompilationDto.setEvents(new HashSet<>());
+        }
+        if(newCompilationDto.getPinned()==null){
+            newCompilationDto.setPinned(false);
+        }
         Compilation compilation = CompilationMapper.toCompilation(newCompilationDto);
         if (newCompilationDto.getEvents() != null && newCompilationDto.getEvents().size() > 0) {
             Set<Event> events = eventRepository.findAllByIdIn(newCompilationDto.getEvents());
