@@ -32,9 +32,6 @@ public class CompilationServiceImpl implements CompilationService {
     @Transactional
     @Override
     public CompilationDto addNewCompilation(NewCompilationDto newCompilationDto) {
-        if (newCompilationDto.getEvents() == null) {
-            newCompilationDto.setEvents(new HashSet<>());
-        }
         if (newCompilationDto.getPinned() == null) {
             newCompilationDto.setPinned(false);
         }

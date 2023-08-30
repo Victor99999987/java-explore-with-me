@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
-public interface EventRepository extends JpaRepository<Event, Long>, QuerydslPredicateExecutor {
+public interface EventRepository extends JpaRepository<Event, Long>, QuerydslPredicateExecutor<Event> {
     Set<Event> findAllByIdIn(Set<Long> ids);
 
     Optional<Event> findByIdAndState(Long id, StateEvent state);

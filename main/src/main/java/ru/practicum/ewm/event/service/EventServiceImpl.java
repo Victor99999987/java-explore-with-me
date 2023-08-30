@@ -341,7 +341,7 @@ public class EventServiceImpl implements EventService {
                     .and(predicate);
         }
         if (categories != null && categories.size() > 0) {
-            predicate = qEvent.category.id.in(categories);
+            predicate = qEvent.category.id.in(categories).and(predicate);
         }
         if (paid != null) {
             predicate = qEvent.paid.eq(paid).and(predicate);
