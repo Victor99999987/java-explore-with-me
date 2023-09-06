@@ -1,0 +1,25 @@
+public
+[GET] /comments?eventId={eventId}&from={from}&size={size}
+[GET] /comments/{commentId}
+
+private
+[GET] /users/{userId}/comments?eventId={eventId}&from={from}&size={size}
+[POST] /users/{userId}/comments?eventId={eventId}
+[PATCH] /users/{userId}/comments/{commentId}
+[DELETE] /users/{userId}/comments/{commentId}
+
+admin
+[GET] /admin/comments?from={from}&size={size}&events={events}
+[DELETE] /admin/comments/{commentId}
+[PATCH] /admin/comments/{commentId}
+
+
+
+Создавать комментарии могут только авторизованные пользователи
+Добавлять комментарии можно только к опубликованным событиям
+Автор события не может писать комментариии
+
+
+Добавлять ответ на комментарии может только инициатор события
+
+Обычные пользователи могут только просматривать комментарии
